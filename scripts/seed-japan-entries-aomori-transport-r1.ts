@@ -1,0 +1,640 @@
+// Seed 青森県 行 R1(19 筆 / Sprint 1.6)
+//
+// JR 主要 3 / 地方鉄道 3 / 空港 2 / フェリー 3 / バス 3 / 道路 2 / お得切符 3 = 19
+//
+// sub_type +7:aomori_jr_main / aomori_local_railway / aomori_airport /
+// aomori_ferry / aomori_bus / aomori_road / aomori_pass_ticket
+
+import { config as loadEnv } from "dotenv";
+loadEnv({ path: ".env.local" });
+
+import { createAdminClient } from "../src/lib/supabase/admin";
+
+const DRY = process.argv.includes("--dry-run");
+
+interface SeedRow {
+  slug: string;
+  category: "transport";
+  sub_type: string;
+  title_zh: string;
+  title_ja: string | null;
+  romaji: string | null;
+  summary_zh: string;
+  content_md: string | null;
+  region: "tohoku";
+  prefecture_ja: "青森県";
+  gun_ja: string | null;
+  municipality_ja: string | null;
+  lg_code: string | null;
+  area_types: string[];
+  lat: number | null;
+  lon: number | null;
+  season_start: string | null;
+  season_end: string | null;
+  event_start: string | null;
+  event_end: string | null;
+  price_tier: number | null;
+  booking_window_days: number | null;
+  closed_days: string[];
+  external_urls: Record<string, string>;
+  tags: string[];
+  source: "manual";
+}
+
+const rows: SeedRow[] = [
+  // ════════════════════════════════════════════════════════════════════
+  // JR 主要 (3) — 東北新幹線+奥羽本線+青い森鉄道
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "tohoku-shinkansen-shin-aomori-hachinohe",
+    category: "transport",
+    sub_type: "aomori_jr_main",
+    title_zh: "東北新幹線(新青森・八戸・七戸十和田 3 駅+ 2010 八戸-新青森延伸開業 + 北海道新幹線 2016 函館北斗まで延伸+ 東京-新青森 3 時間 10 分)",
+    title_ja: "東北新幹線",
+    romaji: "Tōhoku Shinkansen",
+    summary_zh: "**東北新幹線は青森県内 3 駅運行**(JR 東日本・**新青森 + 八戸 + 七戸十和田**)。**2002 八戸開業 + 2010 新青森延伸 + 2016 北海道新幹線函館北斗まで延伸**、**東京-新青森 3 時間 10 分・¥17,470**、はやぶさ + はやて運行、青森観光の本州側玄関。",
+    content_md: "- 駅:**新青森 + 八戸 + 七戸十和田 3 駅**\n- 開業:**2002 八戸開業 → 2010 新青森延伸 → 2016 北海道新幹線函館北斗延伸**\n- 主要列車:**はやぶさ + はやて**\n- 所要:**東京-新青森 3 時間 10 分(指定席 ¥17,470)**\n- 所要:**東京-八戸 2 時間 50 分(指定席 ¥16,580)**\n- 主要利用:**新青森 → 青森駅(奥羽本線連絡 5 分)**\n- 並列:R1 行 青い森鉄道 + 奥羽本線 = 県内連絡網",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8267,
+    lon: 140.6939,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: { official: "https://www.jreast.co.jp/" },
+    tags: ["tohoku_shinkansen", "shin_aomori_hachinohe_shichinohe", "2010_extension", "hayabusa"],
+    source: "manual",
+  },
+  {
+    slug: "ou-line-aomori-akita",
+    category: "transport",
+    sub_type: "aomori_jr_main",
+    title_zh: "JR 奥羽本線(青森-福島 484km+ 青森県内 青森-新青森-弘前-大鰐温泉-碇ヶ関等+ 在来線+ つがる(青森-秋田)特急運行)",
+    title_ja: "奥羽本線",
+    romaji: "Ōu Honsen",
+    summary_zh: "**JR 奥羽本線是青森県内主要在来線**(JR 東日本・**青森-福島 484km の北端区間**)。**青森-新青森-弘前-大鰐温泉-碇ヶ関 等運行**、**つがる(青森-秋田)特急運行 + 普通列車多数**、青森県内移動の中心軸、五能線リゾートしらかみとの乗換 hub。",
+    content_md: "- 運行:**JR 東日本奥羽本線**(青森-福島 484km の北端区間)\n- 県内主要駅:**青森・新青森・弘前・大鰐温泉・碇ヶ関**\n- 主要特急:**つがる(青森-秋田 約 2 時間 40 分・指定席 ¥3,690)**\n- 普通列車:**青森-弘前 約 35-50 分 ¥770**\n- 並列観光:R1 楽 五能線リゾートしらかみ(青森-秋田)と乗換 hub\n- 並列宿:R1 住 大鰐温泉 + 浅虫温泉",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://www.jreast.co.jp/" },
+    tags: ["ou_main_line", "tsugaru_express", "aomori_hirosaki_osato"],
+    source: "manual",
+  },
+  {
+    slug: "aoimori-railway",
+    category: "transport",
+    sub_type: "aomori_jr_main",
+    title_zh: "青い森鉄道(目時-青森 122km+ 2002 八戸新幹線開業時 JR 東北本線青森側分離 + 2010 全線+ 八戸-青森-浅虫温泉アクセス基幹)",
+    title_ja: "青い森鉄道",
+    romaji: "Aoimori Tetsudō",
+    summary_zh: "**青い森鉄道是青森県第三セクター鉄道**(青森県+地元出資・**目時-青森 122km**)。**2002 八戸新幹線開業時 + 2010 新青森延伸時に JR 東北本線青森側を分離した第 3 セクター**、八戸-青森-浅虫温泉間の基幹移動、青森-八戸 約 1 時間 35 分・¥3,540。",
+    content_md: "- 運行:**青い森鉄道(青森県第三セクター)**(目時-青森 122km)\n- 起源:**2002 八戸新幹線開業時 + 2010 全線移管・JR 東北本線青森側分離**\n- 主要駅:**目時 + 三戸 + 八戸 + 三沢 + 野辺地 + 浅虫温泉 + 青森**\n- 所要:**八戸-青森 約 1 時間 35 分 ¥3,540**\n- 所要:**青森-浅虫温泉 約 25 分 ¥320**\n- 並列宿:R1 住 浅虫温泉 (青い森鉄道 浅虫温泉駅徒歩)\n- 並列観光:R1 楽 八戸線 + 青い森鉄道 = 八戸-青森-浅虫線",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://aoimorirailway.com/" },
+    tags: ["aoimori_railway", "third_sector", "2002_2010_split", "122km"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 地方私鉄 (3) — 弘南弘南線+大鰐線+津軽鉄道
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "konan-konan-line",
+    category: "transport",
+    sub_type: "aomori_local_railway",
+    title_zh: "弘南鉄道弘南線(弘前-黒石 16.8km+ 1927 開業 98 年+ 弘前駅-平賀-黒石+ 黒石こみせ通り + 黒石温泉郷アクセス基幹+ 1 時間 1-2 本)",
+    title_ja: "弘南鉄道弘南線",
+    romaji: "Kōnan Kōnan Line",
+    summary_zh: "**弘南鉄道弘南線是津軽中部の地方私鉄**(弘前-黒石 16.8km・**1927 年開業 98 年**)。**弘前駅(JR 連絡)-平賀-黒石**、所要 30 分・¥510、黒石こみせ通り(重伝建)+黒石温泉郷アクセス基幹、1 時間 1-2 本運行、弘前から黒石観光の代表手段。",
+    content_md: "- 運行:**弘南鉄道弘南線**(弘前-黒石 16.8km)\n- 開業:**1927 年・98 年**\n- 主要駅:**弘前 + 平賀 + 田舎館 + 黒石**\n- 所要:**全線 30 分 ¥510**\n- 並列観光:**黒石こみせ通り(重伝建)+ 黒石温泉郷 + 田舎館村田んぼアート**\n- 運行頻度:**1 時間 1-2 本**\n- 並列:R1 行 弘南鉄道大鰐線 + 弘南線 = 弘南鉄道 2 線",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "弘前市",
+    lg_code: "02202",
+    area_types: ["transit_hub"],
+    lat: 40.5728,
+    lon: 140.4711,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://konantetsudo.jp/" },
+    tags: ["konan_konan_line", "1927", "hirosaki_kuroishi"],
+    source: "manual",
+  },
+  {
+    slug: "konan-owani-line",
+    category: "transport",
+    sub_type: "aomori_local_railway",
+    title_zh: "弘南鉄道大鰐線(中央弘前-大鰐 13.9km+ 1952 開業 73 年+ 中央弘前駅(弘前公園徒歩 5 分)-大鰐+ 大鰐温泉 + スキー場アクセス + JR 弘前駅と区別 注意)",
+    title_ja: "弘南鉄道大鰐線",
+    romaji: "Kōnan Ōwani Line",
+    summary_zh: "**弘南鉄道大鰐線是中央弘前-大鰐の地方私鉄**(中央弘前-大鰐 13.9km・**1952 年開業 73 年**)。**中央弘前駅は弘前公園 (R1 育) 徒歩 5 分・JR 弘前駅とは別駅で要注意**、大鰐(R1 住 大鰐温泉)まで 30 分 ¥530、大鰐温泉スキー場+大鰐温泉アクセス。",
+    content_md: "- 運行:**弘南鉄道大鰐線**(中央弘前-大鰐 13.9km)\n- 開業:**1952 年・73 年**\n- 注意:**中央弘前駅 ≠ JR 弘前駅**(両駅徒歩 15 分・別場所)\n- 中央弘前駅立地:**弘前公園 徒歩 5 分**\n- 所要:**全線 30 分 ¥530**\n- 並列観光:R1 育 弘前城 + 弘前公園 + R1 住 大鰐温泉",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "弘前市",
+    lg_code: "02202",
+    area_types: ["transit_hub"],
+    lat: 40.6066,
+    lon: 140.4715,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://konantetsudo.jp/" },
+    tags: ["konan_owani_line", "1952", "chuo_hirosaki_owani", "different_from_jr_hirosaki"],
+    source: "manual",
+  },
+  {
+    slug: "tsugaru-railway-overview",
+    category: "transport",
+    sub_type: "aomori_local_railway",
+    title_zh: "津軽鉄道(津軽五所川原-津軽中里 20.7km+ 1930 開業 95 年+ JR 五能線五所川原駅で乗換+ ストーブ列車 12-3 月 + 鈴虫列車 7-9 月 + 風鈴列車 6 月)",
+    title_ja: "津軽鉄道",
+    romaji: "Tsugaru Tetsudō",
+    summary_zh: "**津軽鉄道是津軽北部の地方私鉄**(五所川原市-中泊町 20.7km・**1930 年開業 95 年**)。**津軽五所川原(JR 五能線連絡)-金木(斜陽館 R1 育)-津軽中里**、**ストーブ列車(12-3 月)+ 鈴虫列車(7-9 月)+ 風鈴列車(6 月)**季節運行で観光人気、太宰治『津軽』+ 斜陽館アクセス。",
+    content_md: "- 運行:**津軽鉄道**(津軽五所川原-津軽中里 20.7km)\n- 開業:**1930 年・95 年**\n- 主要駅:**津軽五所川原 + 金木(斜陽館) + 津軽中里**\n- 所要:**全線 45 分 ¥870**\n- 季節運行:**ストーブ列車(12-3 月) + 鈴虫列車(7-9 月) + 風鈴列車(6 月)**\n- 並列観光:R1 育 斜陽館(金木駅徒歩 7 分)+ 立佞武多の館(五所川原駅徒歩 5 分)\n- 並列:R1 楽 ストーブ列車 と組合せ",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "五所川原市",
+    lg_code: "02205",
+    area_types: ["transit_hub"],
+    lat: 40.8067,
+    lon: 140.4419,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://tsutetsu.com/" },
+    tags: ["tsugaru_railway", "1930", "5_kanagi_25min", "stove_train_seasonal"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 空港 (2) — 青森+三沢
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "aomori-airport",
+    category: "transport",
+    sub_type: "aomori_airport",
+    title_zh: "青森空港(青森市・1964 開港 + 2 種空港+ 全日空 + JAL 国内線+ 青森-東京/大阪/名古屋/札幌/ソウル定期便+ 青森駅から弘南バス約 35 分・¥720)",
+    title_ja: "青森空港",
+    romaji: "Aomori Kūkō",
+    summary_zh: "**青森空港是青森県玄関空港**(青森市大谷・**1964 開港・2 種空港**)。**青森-東京羽田 + 大阪伊丹 + 名古屋小牧 + 札幌新千歳 + ソウル(LCC 季節運行)定期便**、青森駅から弘南バス約 35 分・¥720、新青森駅とは異なるアクセス。",
+    content_md: "- 立地:**青森市大谷字小谷 1-5**(青森駅 → 弘南バス 約 35 分・¥720)\n- 開港:**1964 年・61 年**\n- 等級:**第 2 種空港**\n- 国内線:**東京羽田 + 大阪伊丹 + 名古屋小牧 + 札幌新千歳**\n- 国際線:**ソウル(LCC 季節運行)**\n- 並列空港:**三沢空港(東京羽田-三沢-丘珠-木更津)**\n- 並列観光:R1 食 A-FACTORY + R1 育 ねぶたの家ワ・ラッセ(青森駅前)",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.7344,
+    lon: 140.6906,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: 60,
+    closed_days: [],
+    external_urls: { official: "https://www.aomori-airport.co.jp/" },
+    tags: ["aomori_airport", "1964", "haneda_itami_komaki_chitose"],
+    source: "manual",
+  },
+  {
+    slug: "misawa-airport",
+    category: "transport",
+    sub_type: "aomori_airport",
+    title_zh: "三沢空港(三沢市・米軍三沢基地共用 軍民共用空港+ 国内線 東京羽田 + 札幌丘珠 + 神戸 + 福岡 等+ 三沢駅から徒歩 + バス + JR 八戸駅から接続 ハードル高め)",
+    title_ja: "三沢空港",
+    romaji: "Misawa Kūkō",
+    summary_zh: "**三沢空港は米軍三沢基地共用の軍民共用空港**(三沢市・**1944 米軍管理開始・1952 民間共用開始**)。**国内線 東京羽田 + 札幌丘珠 + 神戸 + 福岡 等**、JR 三沢駅から徒歩+バスでアクセス、青森空港と並ぶ青森県 2 大空港、八戸方面の旅行に便利。",
+    content_md: "- 立地:**三沢市三沢北山**(米軍三沢基地共用)\n- 起源:**1944 米軍管理 + 1952 民間共用開始**\n- 国内線:**東京羽田 + 札幌丘珠 + 神戸 + 福岡 等**\n- 注意:**米軍管制下のため定期便数少なめ**\n- アクセス:**JR 三沢駅 → 三沢空港バス 約 10 分**\n- 並列観光:R1 育 三沢航空科学館(空港隣接) + 寺山修司記念館",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "三沢市",
+    lg_code: "02207",
+    area_types: ["transit_hub"],
+    lat: 40.6925,
+    lon: 141.3686,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: 60,
+    closed_days: [],
+    external_urls: { official: "https://misawa-airport.co.jp/" },
+    tags: ["misawa_airport", "us_military_shared", "1944_us_1952_civil"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // フェリー (3) — 津軽海峡フェリー+大間フェリー+八戸-苫小牧
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "tsugaru-kaikyo-ferry-aomori-hakodate",
+    category: "transport",
+    sub_type: "aomori_ferry",
+    title_zh: "津軽海峡フェリー 青森-函館(津軽海峡 113km・3 時間 40 分 + 1 日 8 便+ 車両搭載可+ 1949 開業 76 年+ 青函連絡船 1988 終航後の継承+ 青森フェリー埠頭)",
+    title_ja: "津軽海峡フェリー 青森-函館",
+    romaji: "Tsugaru Kaikyō Ferry Aomori-Hakodate",
+    summary_zh: "**津軽海峡フェリー 青森-函館は津軽海峡横断船**(青森フェリー埠頭・**1949 開業 76 年**)。**津軽海峡 113km + 3 時間 40 分 + 1 日 8 便 + 車両搭載可**、1988 青函連絡船終航後の継承、青森-函館間の自家用車+二輪車輸送代表、青森フェリー埠頭は青森駅から青森市営バス約 15 分。",
+    content_md: "- 運行:**津軽海峡フェリー(青森-函館 113km)**\n- 開業:**1949 年・76 年**\n- 所要:**3 時間 40 分 + 1 日 8 便**\n- 料金:**旅客 ¥1,800-3,000(2 等)+ 普通車 ¥18,000-28,000(車両込)**\n- 並列航路:**津軽海峡フェリー 大間-函館 1 時間 30 分**(R1 行)\n- 並列観光:**青森-函館 観光 = 北海道+ 青森 二県周遊コース**\n- アクセス:**青森フェリー埠頭(青森駅 → 青森市営バス 約 15 分)**",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub", "coastal"],
+    lat: 40.8628,
+    lon: 140.7456,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: { official: "https://www.tsugarukaikyo.co.jp/" },
+    tags: ["tsugaru_kaikyo_ferry", "aomori_hakodate", "113km_3h40m", "1949"],
+    source: "manual",
+  },
+  {
+    slug: "tsugaru-kaikyo-ferry-oma-hakodate",
+    category: "transport",
+    sub_type: "aomori_ferry",
+    title_zh: "津軽海峡フェリー 大間-函館(津軽海峡最短 17km・1 時間 30 分 + 1 日 2 便+ 大間漁港隣接+ 大間鮪 + 仏ヶ浦 + 函館組合せ周遊+ 車両搭載可)",
+    title_ja: "津軽海峡フェリー 大間-函館",
+    romaji: "Tsugaru Kaikyō Ferry Ōma-Hakodate",
+    summary_zh: "**津軽海峡フェリー 大間-函館是津軽海峡最短ルート**(下北郡大間町・**津軽海峡最短 17km**)。**1 時間 30 分 + 1 日 2 便 + 車両搭載可**、青森-函館 113km の 1/6 距離、大間漁港隣接で R1 食 大間鮪 + R1 楽 仏ヶ浦観光と組合せ、本州最北端からの北海道入口。",
+    content_md: "- 運行:**津軽海峡フェリー(大間-函館 17km)**\n- 所要:**1 時間 30 分 + 1 日 2 便**\n- 料金:**旅客 ¥2,500-3,500(2 等)+ 普通車 ¥18,000-25,000**\n- 立地:**下北郡大間町大間港**(R1 食 大間漁港隣接)\n- 並列観光:R1 食 大間鮪 + R1 楽 仏ヶ浦 + R1 楽 恐山\n- 並列宿:R1 住 大間民宿 + 下風呂温泉 + むつ市\n- アクセス:**JR 下北駅 → 下北交通バス 約 100 分**(レンタカー推奨)",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: "下北郡",
+    municipality_ja: "大間町",
+    lg_code: "02423",
+    area_types: ["transit_hub", "coastal"],
+    lat: 41.5286,
+    lon: 140.9094,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: { official: "https://www.tsugarukaikyo.co.jp/" },
+    tags: ["oma_hakodate_ferry", "17km_shortest", "1h30m", "tuna_combination"],
+    source: "manual",
+  },
+  {
+    slug: "hachinohe-tomakomai-ferry",
+    category: "transport",
+    sub_type: "aomori_ferry",
+    title_zh: "シルバーフェリー 八戸-苫小牧(太平洋側ルート 8 時間 + 1 日 4 便+ 八戸港-苫小牧港+ 関東-北海道 自家用車輸送代表+ 夜行便 + 個室+大浴場 完備)",
+    title_ja: "シルバーフェリー 八戸-苫小牧",
+    romaji: "Silver Ferry Hachinohe-Tomakomai",
+    summary_zh: "**シルバーフェリー 八戸-苫小牧は太平洋側ルート**(八戸港・**川崎近海汽船運航**)。**8 時間 + 1 日 4 便(うち夜行 2 便)+ 個室 + 大浴場完備**、関東-北海道間の自家用車輸送代表ルート、青い森鉄道 + 八戸線で八戸港アクセス可、夜行便は車中泊代替で人気。",
+    content_md: "- 運行:**川崎近海汽船シルバーフェリー(八戸-苫小牧)**\n- 所要:**8 時間 + 1 日 4 便**(夜行 2 便 + 昼行 2 便)\n- 料金:**旅客 ¥6,500-12,000(2 等)+ 普通車 ¥25,000-38,000**\n- 設備:**個室 + 大浴場 + レストラン + 売店**\n- 並列利用:**東京-八戸-苫小牧-札幌 自家用車ルート代表**\n- アクセス:**JR 八戸駅 → 八戸市営バス 約 30 分**",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "八戸市",
+    lg_code: "02203",
+    area_types: ["transit_hub", "coastal"],
+    lat: 40.5556,
+    lon: 141.5489,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: 60,
+    closed_days: [],
+    external_urls: { official: "https://www.silverferry.jp/" },
+    tags: ["silver_ferry", "hachinohe_tomakomai", "8h_4_per_day", "kawasaki_kinkai"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // バス (3) — JR バスみずうみ号+弘南バス+下北交通
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "jr-bus-mizuumi-go",
+    category: "transport",
+    sub_type: "aomori_bus",
+    title_zh: "JR バスみずうみ号(青森-八戸-弘前 ↔ 八甲田 + 奥入瀬 + 十和田湖+ 4 月-11 月運行+ 路線バスで国立公園アクセス基幹+ 1 日乗車券 ¥6,500)",
+    title_ja: "JR バスみずうみ号",
+    romaji: "JR Bus Mizuumi-go",
+    summary_zh: "**JR バスみずうみ号は青森+八戸+弘前 ↔ 八甲田・奥入瀬・十和田湖 路線バス**(JR 東日本+JR バス東北・**4 月-11 月運行**)。**酸ヶ湯 + 谷地温泉 + 蔦温泉 + 奥入瀬渓流 + 十和田湖 アクセス基幹**、1 日乗車券 ¥6,500・2 日券 ¥7,500、レンタカー無しで国立公園を回る代表手段。",
+    content_md: "- 運行:**JR バス東北 みずうみ号**(青森+八戸+弘前-八甲田-奥入瀬-十和田湖)\n- 運行期:**4 月-11 月**(冬期積雪閉鎖)\n- 沿線:**酸ヶ湯 + 谷地温泉 + 蔦温泉 + 奥入瀬渓流 + 十和田湖休屋**\n- 料金:**1 日乗車券 ¥6,500 + 2 日券 ¥7,500**(全区間乗降自由)\n- 単片:**青森-十和田湖 約 3 時間 ¥3,090**\n- 並列宿:R1 住 八甲田秘湯 + 奥入瀬+十和田 = レンタカー無しでも回れる",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: "2026-04-01",
+    season_end: "2026-11-15",
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://www.jrbustohoku.co.jp/" },
+    tags: ["jr_bus_mizuumi", "april_november", "hakkoda_oirase_towada", "1day_6500"],
+    source: "manual",
+  },
+  {
+    slug: "konan-bus-hirosaki",
+    category: "transport",
+    sub_type: "aomori_bus",
+    title_zh: "弘南バス(弘前+黒石+西目屋+岩木山+大鰐 周遊+ 弘前公園 + 弘前駅前バスターミナル+ 西目屋線 + 岩木山スカイライン線等+ 観光路線多数)",
+    title_ja: "弘南バス",
+    romaji: "Kōnan Bus",
+    summary_zh: "**弘南バスは津軽中部観光路線バス基幹**(弘前+黒石+西目屋+岩木山+大鰐周遊・**弘前駅前バスターミナル発着**)。**弘前公園 + 西目屋線(白神山地)+ 岩木山スカイライン線 + 大鰐温泉線 等観光路線多数**、JR 弘前駅前+中央弘前駅前 ターミナル両方発着、土手町循環 ¥100 など低価格。",
+    content_md: "- 運行:**弘南バス**(弘前+黒石+西目屋+岩木山+大鰐 周遊)\n- 主要発着:**JR 弘前駅前バスターミナル + 中央弘前駅前**\n- 観光路線:**弘前公園(土手町循環 ¥100) + 西目屋線(白神山地) + 岩木山スカイライン線 + 大鰐温泉線**\n- 並列観光:R1 育 弘前城 + R1 楽 白神山地 + R1 楽 岩木山\n- 注意:**JR 弘前駅 + 中央弘前駅 + 路線異なるため要確認**",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "弘前市",
+    lg_code: "02202",
+    area_types: ["transit_hub"],
+    lat: 40.5728,
+    lon: 140.4711,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://www.konanbus.com/" },
+    tags: ["konan_bus", "hirosaki_kuroishi_iwakisan_shirakami"],
+    source: "manual",
+  },
+  {
+    slug: "shimokita-kotsu-bus",
+    category: "transport",
+    sub_type: "aomori_bus",
+    title_zh: "下北交通(下北半島観光路線+ JR 下北駅(むつ市)発着+ 恐山行 + 大間崎行 + 仏ヶ浦遊覧船連絡 + 下風呂温泉行+ 下北半島観光基幹)",
+    title_ja: "下北交通",
+    romaji: "Shimokita Kōtsū",
+    summary_zh: "**下北交通は下北半島観光路線バス基幹**(JR 下北駅(むつ市)発着・**下北半島内陸+海岸路線網羅**)。**恐山行(45 分)+ 大間崎行(100 分)+ 下風呂温泉行(60 分)+ 仏ヶ浦遊覧船連絡 等**、レンタカー無しで下北半島観光する代表手段だが運行頻度低めで時刻表必確認。",
+    content_md: "- 運行:**下北交通**(下北半島観光路線)\n- 主要発着:**JR 下北駅(むつ市)バスターミナル**\n- 主要路線:**恐山行(45 分)+ 大間崎行(100 分)+ 下風呂温泉行(60 分)+ 薬研温泉行 + 尻屋崎行**\n- 注意:**運行頻度低め(1 日 3-6 便)時刻表必確認**\n- 並列観光:R1 楽 恐山 + 大間崎 + 仏ヶ浦 + 尻屋崎\n- 並列宿:R1 住 下風呂 + 薬研 + 大間民宿",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "むつ市",
+    lg_code: "02208",
+    area_types: ["transit_hub"],
+    lat: 41.2925,
+    lon: 141.1833,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["shimokita_kotsu", "shimokita_peninsula", "low_frequency"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 道路 (2) — 東北道+みちのく有料道路
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "tohoku-expressway-aomori",
+    category: "transport",
+    sub_type: "aomori_road",
+    title_zh: "東北自動車道(青森県内 IC 8 ヶ所+ 青森-大鰐弘前-碇ヶ関-八戸 等+ 川崎-青森 約 670km・8 時間+ レンタカー観光道路網基幹+ 八戸 IC 経由九州→青森 ETC)",
+    title_ja: "東北自動車道",
+    romaji: "Tōhoku Jidōshadō",
+    summary_zh: "**東北自動車道は青森県内縦貫高速道路**(NEXCO 東日本・**青森県内 IC 8 ヶ所+ 川崎-青森 約 670km**)。**主要 IC:青森 + 大鰐弘前 + 碇ヶ関 + 黒石 + 浪岡 + 八戸 + 安代分岐**、レンタカー観光道路網基幹、首都圏-青森 8 時間ドライブ、ETC 利用で休日割引適用。",
+    content_md: "- 運行:**東北自動車道**(NEXCO 東日本・川崎-青森 670km)\n- 県内 IC:**青森 + 浪岡 + 大鰐弘前 + 碇ヶ関 + 黒石 + 八戸 + 安代分岐 + 一戸**\n- 所要:**首都圏(川崎)-青森 約 8 時間**\n- 並列道路:**みちのく有料道路** + **百石道路**\n- 注意:**冬期積雪 + 強風で速度規制 + 通行止頻発**",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://www.driveplaza.com/" },
+    tags: ["tohoku_expressway", "8_ics_aomori", "670km_kawasaki_aomori"],
+    source: "manual",
+  },
+  {
+    slug: "michinoku-toll-road",
+    category: "transport",
+    sub_type: "aomori_road",
+    title_zh: "みちのく有料道路(青森-七戸 21km+ 青森空港+青森市内-八甲田-奥入瀬+十和田 アクセス短縮+ 青森県道路公社運営+ 通行料 軽 ¥530-+ 自家用車 ¥850-)",
+    title_ja: "みちのく有料道路",
+    romaji: "Michinoku Yūryō Dōro",
+    summary_zh: "**みちのく有料道路は青森-七戸を結ぶ短縮ルート**(青森県道路公社・**青森-七戸 21km**)。**青森空港 + 青森市内-八甲田-奥入瀬+十和田 アクセス短縮**、東北道経由より時間短縮、青森県道路公社運営、通行料 軽 ¥530-+ 自家用車 ¥850-。",
+    content_md: "- 運行:**みちのく有料道路**(青森県道路公社)\n- 区間:**青森-七戸 21km**(青森-八甲田・十和田アクセス短縮)\n- 通行料:**軽 ¥530- + 自家用車 ¥850-**\n- 並列利用:**青森空港 → 八甲田 → 奥入瀬・十和田**ドライブ\n- 並列観光:R1 楽 八甲田ロープウェー + R1 住 酸ヶ湯 + 蔦温泉",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.7700,
+    lon: 140.8000,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["michinoku_toll", "aomori_shichinohe_21km"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // お得切符 (3) — JR 東日本パス+五能線パス+ねぶたパス
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "jr-east-pass-tohoku-area",
+    category: "transport",
+    sub_type: "aomori_pass_ticket",
+    title_zh: "JR 東日本パス 東北エリア(訪日客限定+ 5 日間 ¥30,000+ 東北新幹線・在来線+JR 東バス全線乗放題+ 青森-八戸-仙台-東京 等周遊+ ホテル予約サイト連動)",
+    title_ja: "JR 東日本パス 東北エリア",
+    romaji: "JR East Pass Tōhoku",
+    summary_zh: "**JR 東日本パス 東北エリアは訪日客限定 5 日間乗放題切符**(JR 東日本・**5 日間 ¥30,000**)。**東北新幹線(全区間) + 在来線 + JR 東バス全線乗放題**、青森-八戸-仙台-東京周遊に最便利、訪日パスポート提示購入、ネット予約で来日前確保可、青森周遊の代表 pass。",
+    content_md: "- 発行:**JR 東日本(訪日客限定)**\n- 期間:**5 日間 ¥30,000**(2026 現在)\n- 範囲:**東北新幹線全区間 + 在来線 + JR 東バス全線**\n- 利用条件:**訪日パスポート提示**\n- 予約:**ネット予約 (来日前確保可) + 駅窓口**\n- 並列利用:R1 行 五能線リゾートしらかみ + 東北新幹線 はやぶさ + 八戸線\n- 並列:R1 行 ねぶた金額 < 五能線パス < JR 東日本パス = 周遊規模順",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: { official: "https://www.jreast.co.jp/multi/zh-CHT/pass/eastpass_t.html" },
+    tags: ["jr_east_pass_tohoku", "5days_30000", "foreigner_only", "shinkansen_unlimited"],
+    source: "manual",
+  },
+  {
+    slug: "gono-line-free-pass",
+    category: "transport",
+    sub_type: "aomori_pass_ticket",
+    title_zh: "五能線フリーパス(2 日間 ¥3,800+ 青森-秋田 五能線全区間乗放題+ 五能線リゾートしらかみ指定席別途要 + 千畳敷+十二湖+不老ふ死温泉 周遊コース最適)",
+    title_ja: "五能線フリーパス",
+    romaji: "Gono Line Free Pass",
+    summary_zh: "**五能線フリーパスは 2 日間五能線全区間乗放題**(JR 東日本・**2 日間 ¥3,800**)。**青森-秋田 五能線全区間 + リゾートしらかみは指定席券別途要**、千畳敷海岸 + 十二湖 + 不老ふ死温泉 + 深浦マグロ + 弘前周遊コース最適、青森駅+秋田駅+弘前駅で発売。",
+    content_md: "- 発行:**JR 東日本**\n- 期間:**2 日間 ¥3,800**(2026 現在)\n- 範囲:**五能線全区間(青森-秋田)+ 奥羽本線(青森-川部+ 大館-秋田)**\n- 注意:**リゾートしらかみは別途指定席券 ¥530-1,030 要**\n- 並列観光:R1 楽 千畳敷 + 十二湖 + R1 食 深浦マグロ + R1 住 不老ふ死",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: {},
+    tags: ["gono_free_pass", "2days_3800", "shirakami_indication_extra"],
+    source: "manual",
+  },
+  {
+    slug: "aomori-nebuta-pass",
+    category: "transport",
+    sub_type: "aomori_pass_ticket",
+    title_zh: "青い森鉄道 1 日フリー乗車券(¥2,000・全区間目時-青森乗放題+ 八戸-青森-浅虫温泉-野辺地-三沢 周遊+ 八戸三社大祭+八戸えんぶり+ 浅虫温泉アクセス便利)",
+    title_ja: "青い森鉄道 1 日フリー乗車券",
+    romaji: "Aoimori 1-day Free Pass",
+    summary_zh: "**青い森鉄道 1 日フリー乗車券は 1 日全区間乗放題**(青い森鉄道・**1 日 ¥2,000**)。**目時-青森 122km 全区間乗放題 + 八戸-青森-浅虫温泉-野辺地-三沢 周遊**、青森駅 + 八戸駅 + 三沢駅 + 主要駅で発売、八戸三社大祭 + 八戸えんぶり時期に便利。",
+    content_md: "- 発行:**青い森鉄道**\n- 期間:**1 日 ¥2,000**(2026 現在)\n- 範囲:**青い森鉄道全線(目時-青森 122km)**\n- 並列観光:R1 楽 八戸三社大祭 + R1 楽 えんぶり + R1 住 浅虫温泉 + 星野青森屋(三沢)\n- 並列観光:R1 育 寺山修司記念館(三沢) + 三沢航空科学館\n- 並列:R1 行 五能線パス + 青い森鉄道パス = 県内 2 大お得切符",
+    region: "tohoku",
+    prefecture_ja: "青森県",
+    gun_ja: null,
+    municipality_ja: "青森市",
+    lg_code: "02201",
+    area_types: ["transit_hub"],
+    lat: 40.8244,
+    lon: 140.7406,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: 30,
+    closed_days: [],
+    external_urls: { official: "https://aoimorirailway.com/" },
+    tags: ["aoimori_1day_pass", "2000_yen_122km", "festival_friendly"],
+    source: "manual",
+  },
+];
+
+async function main() {
+  if (rows.length === 0) {
+    console.log("[aomori-transport-r1] 尚無條目");
+    return;
+  }
+  console.log(`[aomori-transport-r1] ${rows.length} 筆 ${DRY ? "(dry-run)" : ""}`);
+  if (DRY) {
+    const bySub = new Map<string, number>();
+    for (const r of rows) bySub.set(r.sub_type, (bySub.get(r.sub_type) ?? 0) + 1);
+    for (const [k, v] of [...bySub.entries()].sort()) {
+      console.log(`  ${k.padEnd(28)} ${v}`);
+    }
+    return;
+  }
+  const sb = createAdminClient();
+  const CHUNK = 50;
+  let written = 0;
+  for (let i = 0; i < rows.length; i += CHUNK) {
+    const batch = rows.slice(i, i + CHUNK);
+    const { error } = await sb.from("japan_entries").upsert(batch as any, { onConflict: "slug" });
+    if (error) {
+      console.error("[aomori-transport-r1] upsert failed:", error);
+      process.exit(1);
+    }
+    written += batch.length;
+    process.stdout.write(`\r[aomori-transport-r1] upsert: ${written}/${rows.length}`);
+  }
+  process.stdout.write("\n");
+  console.log(`[aomori-transport-r1] Done — ${written} rows.`);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

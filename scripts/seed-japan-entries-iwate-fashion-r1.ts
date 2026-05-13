@@ -1,0 +1,606 @@
+// Seed 岩手県 衣 R1(18 筆 / Sprint 1.2)
+//
+// 南部鉄器 5 / 浄法寺塗 3 / ホームスパン 2 / 紫根+古代型染 2 /
+// 百貨店 2 / 民芸 4 = 18
+
+import { config as loadEnv } from "dotenv";
+loadEnv({ path: ".env.local" });
+
+import { createAdminClient } from "../src/lib/supabase/admin";
+
+const DRY = process.argv.includes("--dry-run");
+
+interface SeedRow {
+  slug: string;
+  category: "fashion";
+  sub_type: string;
+  title_zh: string;
+  title_ja: string | null;
+  romaji: string | null;
+  summary_zh: string;
+  content_md: string | null;
+  region: "tohoku";
+  prefecture_ja: "岩手県";
+  gun_ja: string | null;
+  municipality_ja: string | null;
+  lg_code: string | null;
+  area_types: string[];
+  lat: number | null;
+  lon: number | null;
+  season_start: string | null;
+  season_end: string | null;
+  event_start: string | null;
+  event_end: string | null;
+  price_tier: number | null;
+  booking_window_days: number | null;
+  closed_days: string[];
+  external_urls: Record<string, string>;
+  tags: string[];
+  source: "manual";
+}
+
+const rows: SeedRow[] = [
+  // ════════════════════════════════════════════════════════════════════
+  // 南部鉄器 (5) — 概説 + 鈴木盛久 + 釜定 + 岩鋳 + 体験
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "nanbu-tetsubin-overview",
+    category: "fashion",
+    sub_type: "iwate_nanbu_tetsubin",
+    title_zh: "南部鉄器(経産省指定伝統的工芸品 1975+ 盛岡 + 水沢の鋳鉄文化+ 17 世紀盛岡藩主南部信直 京都鋳物師招聘起源+ あられ紋様独特+ 鉄分活かす柔らかい湯+ 国際的高評価)",
+    title_ja: "南部鉄器",
+    romaji: "Nanbu Tekki",
+    summary_zh: "**南部鉄器は岩手代表の経産省指定伝統的工芸品 1975**(盛岡市 + 奥州市水沢区・**17 世紀盛岡藩主南部信直 京都鋳物師招聘起源**)。**あられ紋様独特 + 鉄瓶 + 茶釜 + 急須 + 風鈴 等多種 + 鉄分活かす柔らかい湯**、国際的高評価、青森津軽塗(R1 衣 1646)に並ぶ北東北漆鉄 2 大伝統工芸。",
+    content_md: "- 起源:**17 世紀盛岡藩主 南部信直 京都鋳物師招聘**\n- 認定:**経済産業大臣指定伝統的工芸品 1975**(盛岡 + 水沢 2 系統)\n- 主要品:**鉄瓶 + 茶釜 + 急須 + 風鈴 + 鍋**\n- 特色:**あられ紋様独特 + 鉄分活かす柔らかい湯**\n- 主要工房:**鈴木盛久工房(1625) + 釜定(1852) + 岩鋳(1902)**\n- 並列:**青森津軽塗(1646 R1 衣) + 岩手南部鉄器(17 世紀) = 北東北伝統工芸 2 大**\n- 価格:鉄瓶 ¥15,000-150,000 / 急須 ¥8,000-50,000",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop", "industrial_heritage"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["nanbu_tekki", "1975_designated", "17c_origin", "morioka_mizusawa"],
+    source: "manual",
+  },
+  {
+    slug: "suzuki-morihisa-1625",
+    category: "fashion",
+    sub_type: "iwate_nanbu_tetsubin",
+    title_zh: "鈴木盛久工房(盛岡市紺屋町・1625 創業 400 年+ 南部鉄器最古級工房+ 14 代継承+ 南部藩主御用達+ 国指定無形文化財 14 代盛久 1985 認定+ 盛岡駅徒歩 30 分・国登録工房建物)",
+    title_ja: "鈴木盛久工房",
+    romaji: "Suzuki Morihisa Kōbō",
+    summary_zh: "**鈴木盛久工房は南部鉄器最古級工房**(盛岡市紺屋町・**1625 創業 400 年・14 代継承**)。**南部藩主御用達 + 国指定無形文化財 14 代盛久 1985 認定 + 盛岡市最古鉄器工房**、盛岡駅徒歩 30 分の本店、津軽塗田中屋(R1 衣)に並ぶ北東北最古級工芸店。",
+    content_md: "- 立地:**盛岡市紺屋町 4-10**(盛岡駅 徒歩 30 分)\n- 創業:**1625 年(寛永 2)・400 年**(南部鉄器最古級)\n- 継承:**14 代継承**\n- 認定:**国指定無形文化財 14 代盛久 1985**\n- 由来:**南部藩主御用達**\n- 取扱:**鉄瓶 + 茶釜 + 急須 + 風鈴**\n- 並列:R1 衣 鈴木盛久 1625 + 釜定 1852 + 岩鋳 1902 = 南部鉄器 3 大老舗\n- 価格:鉄瓶 ¥35,000-150,000",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop", "industrial_heritage", "historic_district"],
+    lat: 39.7036,
+    lon: 141.1611,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["suzuki_morihisa", "1625", "400_years", "14th_gen", "1985_designated"],
+    source: "manual",
+  },
+  {
+    slug: "kamasada-morioka-1852",
+    category: "fashion",
+    sub_type: "iwate_nanbu_tetsubin",
+    title_zh: "釜定(盛岡市紺屋町・1852 創業 173 年+ 南部鉄器代表中堅工房+ 現代的シンプルデザイン+ 国際展開・パリ + ニューヨーク販売+ 南部風鈴+鉄瓶代表+ 紺屋町商店街内)",
+    title_ja: "釜定",
+    romaji: "Kamasada",
+    summary_zh: "**釜定は南部鉄器中堅代表工房**(盛岡市紺屋町・**1852 創業 173 年**)。**現代的シンプルデザイン + 国際展開・パリ + ニューヨーク販売 + 南部風鈴 + 鉄瓶代表**、鈴木盛久(1625)伝統路線に対し釜定は現代モダン路線、紺屋町商店街内、盛岡駅徒歩 25 分。",
+    content_md: "- 立地:**盛岡市紺屋町 2-5**(盛岡駅 徒歩 25 分・紺屋町商店街)\n- 創業:**1852 年(嘉永 5)・173 年**\n- 性格:**現代的シンプルデザイン**(伝統より現代モダン路線)\n- 国際展開:**パリ + ニューヨーク販売**\n- 主要品:**南部風鈴 + 急須 + 鉄瓶 + 鋳鉄鍋**\n- 並列:R1 衣 鈴木盛久(伝統)+ 釜定(現代)+ 岩鋳(量産)= 南部鉄器 3 系統\n- 価格:鉄瓶 ¥18,000-65,000 / 風鈴 ¥3,500-8,000",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop", "shopping_district"],
+    lat: 39.7042,
+    lon: 141.1614,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["kamasada", "1852", "173_years", "modern_design", "paris_ny"],
+    source: "manual",
+  },
+  {
+    slug: "iwachu-iron-museum-morioka",
+    category: "fashion",
+    sub_type: "iwate_nanbu_tetsubin",
+    title_zh: "岩鋳鉄器館(盛岡市南仙北・1902 創業 123 年+ 南部鉄器最大量産+ 工場見学 + 物販 + 体験コーナー+ 入館無料+ 観光客大量訪問+ 国際空港 + 全国百貨店主要供給元)",
+    title_ja: "岩鋳鉄器館",
+    romaji: "Iwachū Tetsuki Kan",
+    summary_zh: "**岩鋳鉄器館は南部鉄器最大量産工場見学施設**(盛岡市南仙北・**1902 創業 123 年**)。**工場見学 + 物販 + 体験コーナー + 入館無料**、観光客大量訪問の南部鉄器代表施設、全国百貨店 + 国際空港主要供給元、鈴木盛久(伝統)+ 釜定(現代)+ 岩鋳(量産)= 3 系統の量産代表。",
+    content_md: "- 立地:**盛岡市南仙北 2-23-9**(盛岡駅 → 市バス 約 20 分)\n- 創業:**1902 年・123 年**\n- 性格:**南部鉄器最大量産メーカー**\n- 構成:**工場見学 + 物販 + 体験コーナー**\n- 入館:**無料**(物販+ 体験は別途)\n- 体験:**鉄瓶ペーパーウェイト塗装体験 ¥1,500**\n- 並列:R1 衣 鈴木盛久(伝統)+ 釜定(現代)+ 岩鋳(量産)= 南部鉄器 3 系統\n- 営業:8:30-17:30",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop", "industrial_heritage", "museum_art"],
+    lat: 39.6883,
+    lon: 141.1683,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://iwachu.co.jp/" },
+    tags: ["iwachu", "1902", "123_years", "iron_museum", "free_admission"],
+    source: "manual",
+  },
+  {
+    slug: "nanbu-tekki-experience",
+    category: "fashion",
+    sub_type: "iwate_nanbu_tetsubin",
+    title_zh: "南部鉄器制作体験(盛岡市内 + 水沢区 体験工房+ 鉄瓶ペーパーウェイト塗装 ¥1,500-3,500+ 60-90 分所要+ 即日持ち帰り可+ 岩鋳鉄器館 + 鋳物会社体験コーナー)",
+    title_ja: "南部鉄器制作体験",
+    romaji: "Nanbu Tekki Taiken",
+    summary_zh: "**南部鉄器制作体験は盛岡市内 + 水沢区の体験工房**(岩手県・**鉄瓶ペーパーウェイト塗装 ¥1,500-3,500 が代表**)。**60-90 分所要 + 即日持ち帰り可**、岩鋳鉄器館 + 鋳物会社体験コーナー、本格鉄瓶制作は半年要するため塗装体験が主流、要事前予約。",
+    content_md: "- 体験内容:**鉄瓶ペーパーウェイト塗装 + 風鈴塗装 + ミニ急須塗装**\n- 所要時間:**60-90 分**\n- 価格:**¥1,500-3,500**\n- 完成:**即日持ち帰り可**(漆塗のような半年待ちなし)\n- 主要場所:**岩鋳鉄器館 + 盛岡 + 水沢区鋳物会社体験コーナー**\n- 予約:**3-7 日前推奨**(GW + 夏休み 早期満員)",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: 7,
+    closed_days: [],
+    external_urls: {},
+    tags: ["nanbu_tekki_taiken", "60_90min", "instant_takeaway"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 浄法寺塗 (3) — 概説 + 美術館 + 体験
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "johoji-urushi-overview",
+    category: "fashion",
+    sub_type: "iwate_johoji_urushi",
+    title_zh: "浄法寺塗(二戸市浄法寺町・経産省指定伝統的工芸品 1985+ 8 世紀天台宗浄法寺由来+ 国産漆全国シェア 70% 占有+ 中尊寺金色堂 R1 育 修復にも使用+ 素朴+ 朱漆 + 黒漆代表)",
+    title_ja: "浄法寺塗",
+    romaji: "Jōhōji Nuri",
+    summary_zh: "**浄法寺塗は岩手代表伝統漆器**(二戸市浄法寺町・**経産省指定伝統的工芸品 1985**)。**8 世紀天台宗浄法寺由来 + 国産漆全国シェア 70% 占有 + 中尊寺金色堂 R1 育 修復にも使用**、津軽塗(青森 R1 衣・1646)が華やかなのに対し浄法寺塗は素朴+ 朱+ 黒の伝統漆器、二戸市浄法寺。",
+    content_md: "- 立地:**二戸市浄法寺町**(JR 東北新幹線 二戸駅 → バス 約 30 分)\n- 認定:**経済産業大臣指定伝統的工芸品 1985**\n- 起源:**8 世紀天台宗浄法寺寺院由来**\n- 特色:**素朴 + 朱漆 + 黒漆 + 国産漆 70% シェア**\n- 用途:**茶器 + 椀 + 重箱 + 中尊寺金色堂 R1 育 修復**\n- 並列:**青森津軽塗(R1 衣・1646 華麗)+ 岩手浄法寺塗(8 世紀 素朴)= 北東北漆器 2 大**\n- 価格:**椀 ¥8,000-25,000 / 茶器 ¥15,000-50,000**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "二戸市",
+    lg_code: "03213",
+    area_types: ["craft_workshop", "shrine_temple"],
+    lat: 40.2056,
+    lon: 141.1639,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["johoji_nuri", "1985_designated", "8c_origin", "70pct_share"],
+    source: "manual",
+  },
+  {
+    slug: "tendai-ji-johoji-urushi-museum",
+    category: "fashion",
+    sub_type: "iwate_johoji_urushi",
+    title_zh: "天台寺 + 浄法寺漆芸美術館(二戸市浄法寺町・8 世紀奈良東大寺別院由来+ 浄法寺塗発祥地+ 漆芸作品 + 浄法寺塗歴史展示+ 「漆ジャパン」プロジェクト中心+ 入館 ¥300)",
+    title_ja: "天台寺 + 浄法寺漆芸美術館",
+    romaji: "Tendai-ji + Jōhōji Shitsugei",
+    summary_zh: "**天台寺 + 浄法寺漆芸美術館は浄法寺塗発祥地施設**(二戸市浄法寺町・**8 世紀奈良東大寺別院由来**)。**漆芸作品 + 浄法寺塗歴史展示 + 「漆ジャパン」プロジェクト中心**、入館 ¥300、JR 二戸駅 → バス 約 30 分、浄法寺漆発祥地で歴史 + 工芸を一体体験。",
+    content_md: "- 立地:**二戸市浄法寺町**(JR 二戸駅 → バス 約 30 分)\n- 由来:**8 世紀奈良東大寺別院・天台宗浄法寺**\n- 構成:**天台寺(本堂) + 浄法寺漆芸美術館**\n- 展示:**漆芸作品 + 浄法寺塗歴史 + 中尊寺金色堂修復関連**\n- プロジェクト:**「漆ジャパン」拠点**(国産漆復興プロジェクト)\n- 入館:**¥300**\n- 並列:R1 衣 浄法寺塗概説 + R1 衣 美術館 + 体験 = 浄法寺塗 3 大",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "二戸市",
+    lg_code: "03213",
+    area_types: ["museum_art", "shrine_temple", "craft_workshop"],
+    lat: 40.2056,
+    lon: 141.1639,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["tendai_ji_johoji", "8c_temple", "lacquer_japan_project"],
+    source: "manual",
+  },
+  {
+    slug: "johoji-nuri-experience",
+    category: "fashion",
+    sub_type: "iwate_johoji_urushi",
+    title_zh: "浄法寺塗体験(二戸市内体験工房・椀蒔絵体験 ¥3,500-5,500+ 90-180 分所要+ 漆乾燥仕上げ後 後日郵送+ 浄法寺町体験交流館 + 漆芸美術館の体験コーナー)",
+    title_ja: "浄法寺塗体験",
+    romaji: "Jōhōji Nuri Taiken",
+    summary_zh: "**浄法寺塗体験は二戸市内の伝統漆器体験**(二戸市・**椀蒔絵体験 ¥3,500-5,500**)。**90-180 分所要 + 漆乾燥仕上げ後 後日郵送**、本格漆塗りは半年要、浄法寺町体験交流館 + 漆芸美術館の体験コーナー、要事前予約。",
+    content_md: "- 体験内容:**椀蒔絵体験 + 杯絵付け + 簡易塗装**\n- 所要時間:**90-180 分**\n- 価格:**¥3,500-5,500**\n- 完成:**漆乾燥仕上げ後 後日郵送**(津軽塗 R1 衣 と同様)\n- 主要場所:**浄法寺町体験交流館 + 漆芸美術館の体験コーナー**\n- 予約:**3-7 日前推奨**\n- 並列:R1 衣 津軽塗体験(青森・90 分)+ R1 衣 浄法寺塗体験(岩手・90 分)= 北東北漆体験 2 大",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "二戸市",
+    lg_code: "03213",
+    area_types: ["craft_workshop"],
+    lat: 40.2056,
+    lon: 141.1639,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: 7,
+    closed_days: [],
+    external_urls: {},
+    tags: ["johoji_taiken", "90_180min", "post_delivery"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // ホームスパン (2) — 概説 + 中村工房
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "iwate-homespun-overview",
+    category: "fashion",
+    sub_type: "iwate_homespun",
+    title_zh: "岩手ホームスパン(盛岡 + 花巻発祥手織羊毛布+ 19 世紀末英国宣教師伝来 1882+ 全国唯一の伝統継承地+ ジャケット + ストール + ブランケット+ 中村工房(花巻 1947)+ みちのくあかね会 等)",
+    title_ja: "ホームスパン",
+    romaji: "Homespun",
+    summary_zh: "**岩手ホームスパンは盛岡 + 花巻発祥手織羊毛布**(岩手県・**19 世紀末 1882 英国宣教師伝来**)。**全国唯一の伝統継承地 + ジャケット + ストール + ブランケット + 中村工房(花巻 1947)+ みちのくあかね会 等**、英国 19 世紀の手織技術を岩手で 140 年継承する稀少な伝統。",
+    content_md: "- 起源:**19 世紀末 1882 英国宣教師(エドワード・ガント)伝来**\n- 主要産地:**盛岡市 + 花巻市**\n- 認定:**全国唯一の伝統継承地**\n- 主要工房:**中村工房(花巻 1947 創業 78 年) + みちのくあかね会**\n- 商品:**ジャケット + ストール + ブランケット + コート**\n- 並列:R1 衣 ホームスパン + 南部鉄器 + 浄法寺塗 = 岩手伝統工芸 3 大\n- 価格:**ストール ¥15,000-50,000 / ジャケット ¥80,000-250,000**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop", "industrial_heritage"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["homespun", "1882_british", "morioka_hanamaki", "national_unique"],
+    source: "manual",
+  },
+  {
+    slug: "nakamura-homespun-hanamaki-1947",
+    category: "fashion",
+    sub_type: "iwate_homespun",
+    title_zh: "中村工房(花巻市・1947 創業 78 年+ 岩手ホームスパン代表工房+ 自社羊牧場+ 染色 + 手織 全工程一貫+ アトリエ見学可+ 全国百貨店流通+ 花巻駅 + 花巻温泉郷 R1 住アクセス)",
+    title_ja: "中村工房",
+    romaji: "Nakamura Kōbō",
+    summary_zh: "**中村工房は岩手ホームスパン代表工房**(花巻市・**1947 創業 78 年**)。**自社羊牧場 + 染色 + 手織 全工程一貫**、アトリエ見学可、全国百貨店流通、JR 花巻駅 + 花巻温泉郷(R1 住)アクセス、青森こぎん研究所(R1 衣 1962)に並ぶ北東北手仕事代表工房。",
+    content_md: "- 立地:**花巻市**(JR 花巻駅 タクシー 15 分)\n- 創業:**1947 年・78 年**\n- 性格:**岩手ホームスパン代表工房**\n- 工程:**自社羊牧場 + 染色 + 手織 全工程一貫**\n- 見学:**アトリエ見学可**(要予約)\n- 物販:**全国百貨店 + 工房直販**\n- 並列:**青森こぎん研究所 1962(R1 衣)+ 岩手中村工房 1947 = 北東北手仕事 2 大**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "花巻市",
+    lg_code: "03205",
+    area_types: ["craft_workshop", "farm_field"],
+    lat: 39.3886,
+    lon: 141.1175,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: 14,
+    closed_days: [],
+    external_urls: {},
+    tags: ["nakamura_kobo", "1947", "78_years", "sheep_farm_inhouse"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 紫根+古代型染 (2)
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "nanbu-shikon-zome",
+    category: "fashion",
+    sub_type: "iwate_nanbu_zome",
+    title_zh: "南部紫根染(盛岡藩伝統染色+ ムラサキ草の根による天然紫色染め+ 江戸期盛岡藩特産+ 草木染では最高位+ 県重要無形文化財 + 全国唯一現役継承地+ 盛岡市内工房・物販少数)",
+    title_ja: "南部紫根染",
+    romaji: "Nanbu Shikon Zome",
+    summary_zh: "**南部紫根染は盛岡藩伝統染色**(盛岡市・**ムラサキ草の根による天然紫色染め**)。**江戸期盛岡藩特産 + 草木染では最高位 + 県重要無形文化財 + 全国唯一現役継承地**、青森津軽こぎん刺し(R1 衣)に相当する岩手代表手仕事文化財、現役継承工房少数で稀少。",
+    content_md: "- 起源:**江戸期盛岡藩特産染色**\n- 染料:**ムラサキ草の根**(天然紫色染料・草木染最高位)\n- 認定:**県重要無形文化財**\n- 希少性:**全国唯一現役継承地**(他地域では絶滅)\n- 物販:**盛岡市内工房・物販少数**(注文生産が中心)\n- 並列:R1 衣 南部紫根染 + 古代型染 = 岩手伝統染色 2 大\n- 価格:**ストール ¥30,000-80,000 / 帯 ¥150,000+**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 4,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["nanbu_shikon", "murasaki_root", "edo_origin", "national_unique"],
+    source: "manual",
+  },
+  {
+    slug: "nanbu-kodai-katazome",
+    category: "fashion",
+    sub_type: "iwate_nanbu_zome",
+    title_zh: "南部古代型染(盛岡藩伝統型染め+ 紙型 + 糊置き + 染色の伝統技法+ 古代柄(古墳時代由来)再現+ 県重要無形文化財 + 蛭子屋小野染工場(盛岡)+ 観光客向け体験 + 物販)",
+    title_ja: "南部古代型染",
+    romaji: "Nanbu Kodai Katazome",
+    summary_zh: "**南部古代型染は盛岡藩伝統型染め**(盛岡市・**紙型 + 糊置き + 染色の伝統技法**)。**古代柄(古墳時代由来)再現 + 県重要無形文化財 + 蛭子屋小野染工場(盛岡)現役継承**、観光客向け体験 + 物販、紫根染と並ぶ岩手伝統染色 2 大、盛岡市内工房で見学可。",
+    content_md: "- 起源:**盛岡藩伝統型染め技法**\n- 技法:**紙型 + 糊置き + 染色 + 古代柄(古墳時代由来)再現**\n- 認定:**県重要無形文化財**\n- 主要工房:**蛭子屋小野染工場(盛岡)現役継承**\n- 体験:**観光客向け体験 + 物販**\n- 並列:R1 衣 南部紫根染 + 古代型染 = 岩手伝統染色 2 大\n- 価格:**ハンカチ ¥3,500-8,000 / 帯 ¥80,000+**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 3,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["nanbu_katazome", "kofun_pattern", "ebisuya_ono"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 百貨店 (2) — 川徳 1866 + さくら野盛岡
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "kawatoku-morioka-1866",
+    category: "fashion",
+    sub_type: "iwate_dept_store",
+    title_zh: "川徳(かわとく・盛岡市菜園・1866 創業 159 年+ 岩手最古老舗百貨店+ 全 9 階建+ JR 盛岡駅から徒歩 10 分・市内中心地+ 食料品 + 衣料 + 南部鉄器 + 浄法寺塗物販コーナー入り)",
+    title_ja: "川徳",
+    romaji: "Kawatoku",
+    summary_zh: "**川徳は岩手最古老舗百貨店**(盛岡市菜園・**1866 創業 159 年**)。**全 9 階建 + JR 盛岡駅徒歩 10 分・市内中心地 + 食料品 + 衣料 + 南部鉄器 + 浄法寺塗物販コーナー入り**、青森中三(1896 R1 衣)に相当する岩手代表地域百貨店、明治期から地元密着型。",
+    content_md: "- 立地:**盛岡市菜園 1-10-1**(JR 盛岡駅 徒歩 10 分)\n- 創業:**1866 年(慶応 2)・159 年**(岩手最古老舗百貨店)\n- 規模:**全 9 階建**\n- 取扱:**食料品 + 衣料 + 雑貨 + 南部鉄器 + 浄法寺塗物販コーナー入り**\n- 並列:**青森中三 1896(R1 衣)+ 岩手川徳 1866 = 北東北老舗百貨店 2 大**\n- 営業:10:00-19:00",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["shopping_district", "transit_hub"],
+    lat: 39.7011,
+    lon: 141.1547,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: { official: "https://www.kawatoku.com/" },
+    tags: ["kawatoku", "1866", "159_years", "morioka_oldest"],
+    source: "manual",
+  },
+  {
+    slug: "sakurano-morioka",
+    category: "fashion",
+    sub_type: "iwate_dept_store",
+    title_zh: "さくら野百貨店 盛岡店(盛岡市盛岡駅前通・JR 盛岡駅 徒歩 1 分+ 駅前複合 SC + 食料 + 衣料 + 雑貨+ 川徳と並ぶ盛岡駅前商業 2 大+ 観光客向けの土産購入便利)",
+    title_ja: "さくら野百貨店 盛岡店",
+    romaji: "Sakuranō Morioka",
+    summary_zh: "**さくら野百貨店 盛岡店は盛岡駅前商業 2 大の一**(盛岡市・**JR 盛岡駅徒歩 1 分**)。**駅前複合 SC + 食料 + 衣料 + 雑貨**、川徳(R1 衣・1866 老舗)と並ぶ盛岡駅前商業 2 大、観光客向けの土産購入便利、青森さくら野八戸(R1 衣)と同チェーン。",
+    content_md: "- 立地:**盛岡市盛岡駅前通 2-26**(JR 盛岡駅 徒歩 1 分)\n- 性格:**駅前複合 SC**\n- 取扱:**食料 + 衣料 + 雑貨 + 土産コーナー**\n- 並列:**川徳 1866(老舗)+ さくら野盛岡(駅前)= 盛岡駅前商業 2 大**\n- 並列:**青森さくら野八戸(R1 衣)+ 岩手さくら野盛岡 = 同チェーン**\n- 営業:10:00-20:00",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["shopping_district", "transit_hub"],
+    lat: 39.7019,
+    lon: 141.1361,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["sakurano_morioka", "station_front", "morioka_2_dept"],
+    source: "manual",
+  },
+
+  // ════════════════════════════════════════════════════════════════════
+  // 民芸 (4) — 七夕馬 + 花巻人形 + 馬っこ繋ぎ + 平泉手作り菅笠
+  // ════════════════════════════════════════════════════════════════════
+  {
+    slug: "tanabata-uma-rikuzentakata",
+    category: "fashion",
+    sub_type: "iwate_folk_craft",
+    title_zh: "七夕馬(陸前高田市・南部地方七夕祭由来玩具+ 木彫漆塗馬+ 江戸期田植え後豊作祈願+ 県重要無形民俗文化財+ 七夕祭 8 月旧暦+ 観光客向け銘菓店+ 道の駅で物販)",
+    title_ja: "七夕馬",
+    romaji: "Tanabata Uma",
+    summary_zh: "**七夕馬は陸前高田 + 南部地方七夕祭由来玩具**(陸前高田市・**江戸期田植え後豊作祈願**)。**木彫漆塗馬 + 県重要無形民俗文化財 + 七夕祭 8 月旧暦**、青森八幡馬(R1 衣・日本三大駒)に相当する岩手代表郷土玩具、陸前高田 R1 食 牡蠣観光と組合せ、銘菓店 + 道の駅で物販。",
+    content_md: "- 立地:**陸前高田市 + 南部地方**\n- 起源:**江戸期田植え後豊作祈願七夕祭**\n- 認定:**県重要無形民俗文化財**\n- 行事:**七夕祭 8 月旧暦**\n- 並列:**青森八幡馬 R1 衣(日本三大駒)+ 岩手七夕馬 = 南部郷土玩具 2 大**\n- 物販:**陸前高田銘菓店 + 道の駅 + 観光案内所**\n- 価格:**¥1,500-4,500**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "陸前高田市",
+    lg_code: "03210",
+    area_types: ["craft_workshop"],
+    lat: 39.0292,
+    lon: 141.6253,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["tanabata_uma", "edo_tagoro_festival", "rikuzentakata"],
+    source: "manual",
+  },
+  {
+    slug: "hanamaki-ningyo",
+    category: "fashion",
+    sub_type: "iwate_folk_craft",
+    title_zh: "花巻人形(花巻市・1781 創業 244 年+ 江戸期から続く土人形+ 庶民玩具 + 雛祭り飾り+ 県重要無形民俗文化財 + 阿部家継承 245 年+ 宮沢賢治幼少期玩具伝説+ 花巻駅徒歩 + 道の駅)",
+    title_ja: "花巻人形",
+    romaji: "Hanamaki Ningyō",
+    summary_zh: "**花巻人形は花巻市の伝統土人形**(花巻市・**1781 創業 244 年・阿部家継承**)。**江戸期から続く土人形 + 庶民玩具 + 雛祭り飾り + 県重要無形民俗文化財**、宮沢賢治幼少期玩具伝説、青森下川原焼(R1 衣・1804)に相当する岩手代表土人形、花巻駅徒歩 + 道の駅で物販。",
+    content_md: "- 立地:**花巻市**(JR 花巻駅 徒歩圏 + 道の駅はなまき)\n- 創業:**1781 年・244 年**(阿部家継承)\n- 認定:**県重要無形民俗文化財**\n- 縁:**宮沢賢治幼少期玩具伝説**\n- 並列:**青森下川原焼 1804(R1 衣)+ 岩手花巻人形 1781 = 北東北土人形 2 大**\n- 価格:**¥1,500-5,500**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "花巻市",
+    lg_code: "03205",
+    area_types: ["craft_workshop"],
+    lat: 39.3886,
+    lon: 141.1175,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["hanamaki_ningyo", "1781", "244_years", "abe_family"],
+    source: "manual",
+  },
+  {
+    slug: "morioka-makko-tsunagi",
+    category: "fashion",
+    sub_type: "iwate_folk_craft",
+    title_zh: "盛岡馬っこ繋ぎ(盛岡市・南部馬産地由来民芸+ 馬の人形を縄で繋ぐ伝統+ 江戸期盛岡藩 馬産地八幡平 + 五戸との文化共有+ 県重要無形民俗文化財 + 観光土産物販少数)",
+    title_ja: "盛岡馬っこ繋ぎ",
+    romaji: "Morioka Makko Tsunagi",
+    summary_zh: "**盛岡馬っこ繋ぎは南部馬産地由来民芸**(盛岡市・**江戸期盛岡藩 馬産地八幡平 + 五戸との文化共有**)。**馬の人形を縄で繋ぐ伝統 + 県重要無形民俗文化財**、青森南部地方+岩手南部地方共通の馬文化、観光土産物販少数で稀少、盛岡市内民芸品店で取扱。",
+    content_md: "- 立地:**盛岡市**(南部馬産地由来)\n- 起源:**江戸期盛岡藩 馬産地八幡平 + 五戸との文化共有**\n- 構成:**馬の人形 + 縄で繋ぐ伝統**\n- 認定:**県重要無形民俗文化財**\n- 並列:**青森田子にんにく + 八戸八幡馬 + 岩手馬っこ繋ぎ = 旧南部藩共通馬文化**\n- 物販:**盛岡市内民芸品店 + 道の駅**(稀少)\n- 価格:**¥800-2,500**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: null,
+    municipality_ja: "盛岡市",
+    lg_code: "03201",
+    area_types: ["craft_workshop"],
+    lat: 39.7036,
+    lon: 141.1527,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 1,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["makko_tsunagi", "nanbu_horse", "kyodo_folk"],
+    source: "manual",
+  },
+  {
+    slug: "hiraizumi-mochi-suge",
+    category: "fashion",
+    sub_type: "iwate_folk_craft",
+    title_zh: "平泉手作り菅笠(平泉町・藤原氏 4 代由来民芸+ 菅(すげ・カヤツリグサ科)を手織りした笠+ 江戸期から続く伝統+ 中尊寺参拝者向け実用品+ 観光土産+物販少数)",
+    title_ja: "平泉手作り菅笠",
+    romaji: "Hiraizumi Sugegasa",
+    summary_zh: "**平泉手作り菅笠は藤原氏 4 代由来民芸**(平泉町・**菅を手織りした笠**)。**江戸期から続く伝統 + 中尊寺参拝者向け実用品**、近年は観光土産化、青森あけび蔓細工(R1 衣・縄文由来)に相当する岩手稀少民芸、観光客向けの伝統小物。",
+    content_md: "- 立地:**平泉町**(中尊寺周辺)\n- 起源:**藤原氏 4 代 由来民芸**\n- 素材:**菅(すげ・カヤツリグサ科)を手織り**\n- 用途:**中尊寺参拝者向け実用品 + 現代観光土産**\n- 並列:**青森あけび蔓細工(縄文由来)+ 岩手平泉菅笠(藤原氏由来)= 北東北手仕事民芸 2 大**\n- 物販:**平泉観光案内所 + 道の駅 + 観光土産店**(稀少)\n- 価格:**¥3,500-12,000**",
+    region: "tohoku",
+    prefecture_ja: "岩手県",
+    gun_ja: "西磐井郡",
+    municipality_ja: "平泉町",
+    lg_code: "03402",
+    area_types: ["craft_workshop"],
+    lat: 38.9881,
+    lon: 141.1106,
+    season_start: null,
+    season_end: null,
+    event_start: null,
+    event_end: null,
+    price_tier: 2,
+    booking_window_days: null,
+    closed_days: [],
+    external_urls: {},
+    tags: ["hiraizumi_sugegasa", "fujiwara_origin", "kayatsuri_kusa"],
+    source: "manual",
+  },
+];
+
+async function main() {
+  if (rows.length === 0) {
+    console.log("[iwate-fashion-r1] 尚無條目");
+    return;
+  }
+  console.log(`[iwate-fashion-r1] ${rows.length} 筆 ${DRY ? "(dry-run)" : ""}`);
+  if (DRY) {
+    const bySub = new Map<string, number>();
+    for (const r of rows) bySub.set(r.sub_type, (bySub.get(r.sub_type) ?? 0) + 1);
+    for (const [k, v] of [...bySub.entries()].sort()) {
+      console.log(`  ${k.padEnd(28)} ${v}`);
+    }
+    return;
+  }
+  const sb = createAdminClient();
+  const CHUNK = 50;
+  let written = 0;
+  for (let i = 0; i < rows.length; i += CHUNK) {
+    const batch = rows.slice(i, i + CHUNK);
+    const { error } = await sb.from("japan_entries").upsert(batch as any, { onConflict: "slug" });
+    if (error) {
+      console.error("[iwate-fashion-r1] upsert failed:", error);
+      process.exit(1);
+    }
+    written += batch.length;
+    process.stdout.write(`\r[iwate-fashion-r1] upsert: ${written}/${rows.length}`);
+  }
+  process.stdout.write("\n");
+  console.log(`[iwate-fashion-r1] Done — ${written} rows.`);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

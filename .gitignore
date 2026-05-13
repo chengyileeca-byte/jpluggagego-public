@@ -1,0 +1,56 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js (legacy, stripped)
+/.next/
+/out/
+
+# astro
+/dist/
+/.astro/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# scraper probe dumps
+/tmp/
+
+# Static data export — Supabase grace period 過 (5/1) → SUNSET 実行 (2026-05-04)。
+# public/data/snapshots/ 以下に全 20 表の JSON snapshot を配置。GitHub が以後の事実源。
+
+# data files are not redistributed in this public mirror
+public/data/*
+!public/data/.gitkeep

@@ -1,0 +1,46 @@
+-- Fix Supabase Security Advisor warnings (2026-04-29)
+--
+-- Security Definer View on public.location_report_badges
+--   PostgreSQL views default to SECURITY DEFINER (run with creator's
+--   privileges). Set security_invoker=true so it runs with the querying
+--   user's privileges and respects RLS on the underlying table.
+
+alter view public.location_report_badges set (security_invoker = true);
+
+-- ──────────────────────────────────────────────────────────────────────
+-- Note on RLS Disabled on public.spatial_ref_sys
+-- ──────────────────────────────────────────────────────────────────────
+-- The spatial_ref_sys table is created and owned by the postgres
+-- superuser by the PostGIS extension. Supabase project owners only have
+-- supabase_admin role, which cannot ALTER TABLE on superuser-owned
+-- objects (ERROR 42501: must be owner of table spatial_ref_sys).
+--
+-- This is a known PostGIS + Supabase limitation:
+--   https://github.com/orgs/supabase/discussions/21449
+--
+-- The table contains 8500+ static reference rows (SRID definitions) and
+-- is read-only for application code. The lack of RLS does not pose an
+-- actual security risk — any user (anon or authed) can already read it
+-- via the standard PostGIS API, and there is no sensitive data.
+--
+-- Suppress this advisor warning manually in Supabase Dashboard:
+--   Database → Advisors → Errors → "RLS Disabled in Public" →
+--   click the row → "Mark as acknowledged"
+
+-- ──────────────────────────────────────────────────────────────────────
+-- Other PostGIS-related limitations (acknowledged, cannot be fixed)
+-- ──────────────────────────────────────────────────────────────────────
+-- Same superuser-ownership limitation applies to:
+--
+--   1. Extension in Public — public.postgis, public.pg_trgm
+--      Best practice: install extensions in a separate schema (e.g.,
+--      "extensions"). Supabase installs PostGIS in public by default
+--      and moving it requires DROP EXTENSION ... CASCADE which would
+--      break every column using its types/operators. Not feasible.
+--
+--   2. Function Search Path Mutable on public.st_estimatedextent (×6)
+--      PostGIS-provided SECURITY DEFINER functions, also superuser-owned.
+--      ALTER FUNCTION fails with ERROR 42501.
+--
+-- Both are documented Supabase + PostGIS friction points. Mark these
+-- advisor warnings as acknowledged in Dashboard.
