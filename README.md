@@ -6,6 +6,17 @@
 
 ---
 
+## Status (2026-09)
+
+**The site is live as a frozen static archive.** On 2026-08-27 the dynamic app was retired and jpluggagego.com was crawled into 8,654 static HTML pages, now served as pure static assets on Cloudflare Workers — US$0/month, with no runtime left to break.
+
+Why: production had migrated from Vercel to Cloudflare Workers (OpenNext), and measured Worker CPU was **P50 23.8 ms / P99 632 ms against the free plan's 10 ms cap** — once the paid plan ended, roughly 70% of dynamic requests would have failed with Error 1102. Freezing the site into static assets beat leaving it to error out unattended. `audio.jpluggagego.com` (R2) is unaffected.
+
+This repo is a source snapshot from 2026-05-13; the private upstream has 1,600+ commits. Shipped after this snapshot and not included here:
+
+- **Learning mode** — Japanese-learning layer with 6,201 generated audio files served from R2
+- **Reader contributions** (2026-09-01) — no-login submissions behind Turnstile, unpublished by default, stored in D1, kept strictly separate from the verified fact layer
+
 ## What it does
 
 - **Fare comparison** — Yamato 黒猫宅急便 vs JP Post ゆうパック, full 47×47 prefecture matrix
@@ -22,7 +33,7 @@
 - Next.js 16 App Router · React 19 · TypeScript
 - Tailwind CSS
 - JSON-as-database (`public/data/*.json`, refreshed by scraper cron)
-- Vercel (production) · GitHub Actions (weekly scrapes)
+- Production history: Vercel → OpenNext on Cloudflare Workers → static freeze on 2026-08-27 (see [Status](#status-2026-09)) · GitHub Actions (weekly scrapes)
 
 ## Local development
 
@@ -81,6 +92,17 @@ GitHub Actions schedules live in [`.github/workflows/`](./.github/workflows/).
 
 [jpluggagego.com](https://jpluggagego.com) — 日本國內 / 機場 ↔ 住宿的行李宅配比價、最近據點查詢,加上 47 都道府縣自助旅行策展。三語(繁中 / 日 / 英)。
 
+### 現況(2026-09)
+
+**站點仍在線上,但已凍結為靜態封存版。** 2026-08-27 動態應用退役,整站爬成 8,654 頁靜態 HTML,以 Cloudflare Workers 純靜態資產供應——每月 $0、沒有會壞的執行時。
+
+原因:production 先前已從 Vercel 遷到 Cloudflare Workers(OpenNext),實測 Worker CPU **P50 23.8 ms / P99 632 ms,對上免費方案 10 ms 上限**——付費方案到期後約七成動態請求會回 Error 1102。與其讓站在無人看管下持續噴錯,不如凍結成靜態資產。`audio.jpluggagego.com`(R2)不受影響。
+
+本 repo 是 2026-05-13 的原始碼快照;私有上游有 1,600+ commits。快照之後上線、不在本 repo 的功能:
+
+- **學習モード**——日語學習層,6,201 個生成音檔由 R2 供應
+- **讀者投稿系統**(2026-09-01)——免登入投稿、Turnstile 防濫用、預設不發佈、D1 儲存,讀者內容與查證事實層嚴格分離
+
 ### 這是什麼
 
 - **比價**:Yamato 黒猫宅急便 vs 郵便局 ゆうパック,47×47 全都道府縣運費矩陣
@@ -97,7 +119,7 @@ GitHub Actions schedules live in [`.github/workflows/`](./.github/workflows/).
 - Next.js 16 App Router · React 19 · TypeScript
 - Tailwind CSS
 - JSON-as-database(`public/data/*.json`,scraper cron 自動更新)
-- Vercel(production)· GitHub Actions(週爬)
+- Production 歷程:Vercel → OpenNext on Cloudflare Workers → 2026-08-27 靜態凍結(見「現況」)· GitHub Actions(週爬)
 
 ### 開發
 
